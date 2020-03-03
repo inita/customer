@@ -67,7 +67,7 @@ public class CustomerController {
         }
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/customer", method = RequestMethod.GET)
     public ResponseEntity<Customer> getCustomer(@RequestHeader("User-Agent") String userAgent, @RequestHeader(value = "user-preference", required = false) String userPreference) {
         try {
             /**
