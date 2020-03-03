@@ -64,7 +64,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity getCustomer(@RequestHeader("User-Agent") String userAgent, @RequestHeader(value = "user-preference", required = false) String userPreference) {
+    public ResponseEntity<Customer> getCustomer(@RequestHeader("User-Agent") String userAgent, @RequestHeader(value = "user-preference", required = false) String userPreference) {
         try {
             /**
              * Set baggage
@@ -85,16 +85,13 @@ public class CustomerController {
             customer.setAddress("1800 Sunset Bvd., L.A.");
             customer.setPreference(preferenceResponse);
 
-            return ResponseEntity.ok(String.format(RESPONSE_STRING_FORMAT, customer));
+            return ResponseEntity.ok(customer);
         } catch (HttpStatusCodeException ex) {
             logger.warn("Exception trying to get the response from preference service.", ex);
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                    .body(String.format(RESPONSE_STRING_FORMAT,
-                            String.format("%d %s", ex.getRawStatusCode(), createHttpErrorResponseString(ex))));
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         } catch (RestClientException ex) {
             logger.warn("Exception trying to get the response from preference service.", ex);
-            return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                    .body(String.format(RESPONSE_STRING_FORMAT, ex.getMessage()));
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
     }
 
