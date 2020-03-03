@@ -4,17 +4,25 @@ import java.util.Objects;
 
 public class Preference {
 
-    private Integer id;
+    private Long id;
+    private String date;
     private String comment;
-    private Boolean isActive;
-    private String lastUpdated;
+    private Recommendation recommendation;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getComment() {
@@ -25,20 +33,12 @@ public class Preference {
         this.comment = comment;
     }
 
-    public Boolean getActive() {
-        return isActive;
+    public Recommendation getRecommendation() {
+        return recommendation;
     }
 
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-    public String getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public void setLastUpdated(String lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setRecommendation(Recommendation recommendation) {
+        this.recommendation = recommendation;
     }
 
     @Override
@@ -47,13 +47,13 @@ public class Preference {
         if (o == null || getClass() != o.getClass()) return false;
         Preference that = (Preference) o;
         return Objects.equals(id, that.id) &&
+                Objects.equals(date, that.date) &&
                 Objects.equals(comment, that.comment) &&
-                Objects.equals(isActive, that.isActive) &&
-                Objects.equals(lastUpdated, that.lastUpdated);
+                Objects.equals(recommendation, that.recommendation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, comment, isActive, lastUpdated);
+        return Objects.hash(id, date, comment, recommendation);
     }
 }

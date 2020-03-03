@@ -1,0 +1,48 @@
+package com.redhat.developer.demos.customer;
+
+import java.util.Objects;
+
+public class Recommendation {
+
+    private Long id;
+    private String comment;
+    private Boolean isOk;
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean getOk() {
+        return isOk;
+    }
+
+    public void setOk(Boolean ok) {
+        isOk = ok;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Recommendation that = (Recommendation) o;
+        return Objects.equals(comment, that.comment) &&
+                Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(comment, id);
+    }
+}
