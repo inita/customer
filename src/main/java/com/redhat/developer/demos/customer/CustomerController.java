@@ -27,6 +27,10 @@ public class CustomerController {
 
     private final RestTemplate restTemplate;
 
+    private static final String[] names = {"Harry Potter", "Hermione Granger", "Lord Voldemort", "Draco Malfoy", "Ron Weasley",
+            "Severus Snape", "Sirius Black", "Albus Dumbledore", "Rubeus Hagrid", "Ginny Weasley"};
+    private static final String[] addresses = {"1800 Sunset Bvd, Los Angeles", "200 5h Ave, New York City", "1600 Pennsylvania Ave NW, Washington DC"};
+
     @Value("${preferences.api.url:http://preference:8080}")
     private String remoteURL;
 
@@ -81,8 +85,10 @@ public class CustomerController {
             Random rand = new Random();
             Integer id = rand.nextInt(1000000);
             customer.setId(id);
-            customer.setName("John Doe");
-            customer.setAddress("1800 Sunset Bvd., L.A.");
+            String name = names[id % 10];
+            customer.setName(name);
+            String address = addresses[id % 3];
+            customer.setAddress(address);
             customer.setPreference(preferenceResponse);
 
             return ResponseEntity.ok(customer);
