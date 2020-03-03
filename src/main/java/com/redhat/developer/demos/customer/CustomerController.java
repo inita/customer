@@ -16,6 +16,8 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Random;
+
 @RestController
 public class CustomerController {
 
@@ -62,7 +64,7 @@ public class CustomerController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<String> getCustomer(@RequestHeader("User-Agent") String userAgent, @RequestHeader(value = "user-preference", required = false) String userPreference) {
+    public ResponseEntity getCustomer(@RequestHeader("User-Agent") String userAgent, @RequestHeader(value = "user-preference", required = false) String userPreference) {
         try {
             /**
              * Set baggage
@@ -72,9 +74,18 @@ public class CustomerController {
                 tracer.activeSpan().setBaggageItem("user-preference", userPreference);
             }
 
-            ResponseEntity<String> responseEntity = restTemplate.getForEntity(remoteURL, String.class);
-            String response = responseEntity.getBody();
-            return ResponseEntity.ok(String.format(RESPONSE_STRING_FORMAT, response.trim()));
+            ResponseEntity<Preference> responseEntity = restTemplate.getForEntity(remoteURL, Preference.class);
+            Preference preferenceResponse = responseEntity.getBody();
+            Customer customer = new Customer();
+
+            Random rand = new Random();
+            Integer id = rand.nextInt(1000000);
+            customer.setId(id);
+            customer.setName("John Doe");
+            customer.setAddress("1800 Sunset Bvd., L.A.");
+            customer.setPreference(preferenceResponse);
+
+            return ResponseEntity.ok(String.format(RESPONSE_STRING_FORMAT, customer));
         } catch (HttpStatusCodeException ex) {
             logger.warn("Exception trying to get the response from preference service.", ex);
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
